@@ -1,53 +1,47 @@
-<?php>
-//Start the session
-session_start();
-?>
-
 <!DOCTYPE html>
 <html>
     <body>
-        <?php>
-            $username = $_POST["username"];
-            $password = $_POST["password"];
+        <?php
+            //Start the session
+            session_start();
+            $username1 = $_POST["username"];
+            $password1 = $_POST["password"];
 
-            $servername = "classdb.it.mtu.edu";
-            $dbUsername = "wads_rw";
-            $dbPassword = "wadsworth";
-            $dbName = "wads";
+            $config = parse_ini_file("db.ini");
+            $dbh = new PDO($config['dsn'], $config['username'], $config['password']);
+            $dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
-            // Create connection
-            $conn = new mysqli ($servername, $dbUsername, $dbPassword, $dbName);
+            $dbh->beginTransaction();
+            if(isset($_POST["username"]) && isset($_POST["password"])) {
 
-            // Check connection
-            if ($conn->connect_eror) {
-                die("Connection failed: " . $conn->connect_error);
-            } else {
-                echo "Connection successful";
-            }
-
-            // Prepare and bind
-            $sql = "SELECT * FROM User WHERE userName = $username, password = $password";
-            $result = $conn->query($sql);
-
-            $row = $result->fetch_assoc();
-            if($result->num_rows == 1) {
-
-                // Session variables are saved so that in the profile.php page, the corrent user profile can be loaded
-                $_SESSION["theUserName"] = $row["userName"];
-                $_SESSION["thePassword"] = $row["password"];
+              // Query the database, is there is a result, we know that user already has an account, so load their profile page
+              foreach($dbh->query("SELECT * FROM User WHERE userName = '$username1' AND password = '$password1'") as $row) {
+                $_SESSION["usernameToLoad"] = $username1;
+                $_SESSION["passwordToLoad"] = $password1;
+                $dbh->commit();
 
                 // Go to that user's profile page
                 header("Location: profile.php");
-                
-                echo "Welcome, $row[name].";
-                
-            } else if($result->num_rows > 1) {
-                echo "There is more than one user with this information, what should we do?";
-            }
-            else if($result->num_rows == 0) {
-                // There are no users with those credentials
-                echo "There are no accounts matching that information; please create an account";
+                return;
+              }
+
+              // If there were no results in the table, direct the user to create an account
+              header("Location: login.php");
             }
         ?>
     </body>
 </html>
+
+<!-- // $servername = "classdb.it.mtu.edu";
+// $dbUsername = "wads_rw";
+// $dbPassword = "wadsworth";
+// $dbName = "wads";
+// // Create connection
+// $conn = new mysqli ($servername, $dbUsername, $dbPassword, $dbName);
+//
+// // Check connection
+// if ($conn->connect_eror) {
+//     die("Connection failed: " . $conn->connect_error);
+// } else {
+//     echo "Connection successful";
+// } -->
