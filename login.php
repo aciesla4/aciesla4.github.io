@@ -8,7 +8,7 @@
 			<input type = "submit" name = "login" value = "Login"/>
 		</form>
 		<p>Don't have an account yet? <br/>
-		<input type="button" value="Create one here" onclick="window.location.href='createAccount.php'"/> <br/>
+		<input name="createAccountB" type="button" value="Create one here" onclick="window.location.href='createAccount.php'"/> <br/>
 		</p>
 </body>
 </html>
