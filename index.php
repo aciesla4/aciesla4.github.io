@@ -3,7 +3,7 @@
 <body>
 
 <h1> Fantasy Broomball </h1>
-<p> Wlecome to Fantasy Broomball </p>
+<p> Welcome to Fantasy Broomball </p>
 <p> Click here to login: <br/> 
 <a href="aciesla4.github.io/login.php" name="loginLink">Login</a><br/>
 </p>
