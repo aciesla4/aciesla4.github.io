@@ -2,8 +2,7 @@
 <html>
     <body>
         <?php
-            //Start the session
-            session_start();
+
             $username1 = $_POST["username"];
             $password1 = $_POST["password"];
 
@@ -16,8 +15,10 @@
 
               // Query the database, is there is a result, we know that user already has an account, so load their profile page
               foreach($dbh->query("SELECT * FROM User WHERE userName = '$username1' AND password = '$password1'") as $row) {
+                $_SESSION["name"] = $row[0];
                 $_SESSION["usernameToLoad"] = $username1;
                 $_SESSION["passwordToLoad"] = $password1;
+                $_SESSION["teamName"] = $row[3];
                 $dbh->commit();
 
                 // Go to that user's profile page

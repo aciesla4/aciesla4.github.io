@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html>
    <body>
+     <p align="center">Welcome to your profile page, <?php echo $_SESSION["name"]?>!</p>
       <?php
-         $username = $_GET['username1'];
-         $password = $_GET['password1'];
-         foreach($dbh->query("SELECT * FROM User WHERE userName = '$username' AND password = '$password'") as $row) {
-            $_SESSION["name"] = $name;
-         }
-         <p>
-            echo 'Welcome '.$name.'!';
-         </p>
+         $name = $_SESSION["name"];
+         $username = $_SESSION["usernameToLoad"];
+         $password = $_SESSION["passwordToLoad"];
+         $teamName = $_SESSION["teamName"];
+
+         $config = parse_ini_file("db.ini");
+         $dbh = new PDO($config['dsn'], $config['username'], $config['password']);
+         $dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+
+         
       ?>
+
+
    </body>
 </html>

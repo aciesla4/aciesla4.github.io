@@ -14,9 +14,9 @@
       $dbh->beginTransaction();
       $dbh->query("INSERT INTO User VALUES('$newName', '$newUsername', '$newPassword', '$teamName')");
 
-      $_SESSION["newName"] = $newName;
-      $_SESSION["newUsername"] = $newUsername;
-      $_SESSION["newPassword"] = $newPassword;
+      $_SESSION["name"] = $newName;
+      $_SESSION["usernameToLoad"] = $newUsername;
+      $_SESSION["passwordToLoad"] = $newPassword;
       $_SESSION["teamName"] = $teamName;
       $dbh->commit();
 
